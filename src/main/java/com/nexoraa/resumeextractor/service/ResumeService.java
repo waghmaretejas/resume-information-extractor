@@ -1,5 +1,6 @@
 package com.nexoraa.resumeextractor.service;
 
+import com.nexoraa.resumeextractor.exception.InvalidResumeException;
 import com.nexoraa.resumeextractor.service.extractor.ResumeTextExtractor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -12,17 +13,16 @@ import java.util.List;
 @Service
 public class ResumeService {
 	
+	private final List<ResumeTextExtractor> resumeTextExtractors;
 	@Value("${app.max-file-size}")
 	private DataSize maxFileSize;
-	
-	private final List<ResumeTextExtractor> resumeTextExtractors;
 	
 	public ResumeService(List<ResumeTextExtractor> resumeTextExtractors) {
 		this.resumeTextExtractors = resumeTextExtractors;
 	}
 	
 	public String uploadResume(MultipartFile file) throws IOException {
-	
+		
 		validateFile(file);
 		
 		String fileName = file.getOriginalFilename();
@@ -32,26 +32,21 @@ public class ResumeService {
 		return extractor.extractText(file);
 	}
 	
-	
 	private void validateFile(MultipartFile file) {
 		
 		if (file.isEmpty()) {
-			throw new IllegalArgumentException("Please upload a valid resume file");
+			throw new InvalidResumeException("Please upload a valid resume file");
 		}
 		
 		if (file.getSize() > maxFileSize.toBytes()) {
-			throw new IllegalArgumentException(
-					"File size must not exceed " + maxFileSize.toMegabytes() + " MB"
-			);
+			throw new InvalidResumeException("File size must not exceed " + maxFileSize.toMegabytes() + " MB");
 		}
 		
 		String fileName = file.getOriginalFilename();
 		
-		if (fileName == null ||
-				(!fileName.toLowerCase().endsWith(".pdf")
-						&& !fileName.toLowerCase().endsWith(".docx"))) {
+		if (fileName == null || (!fileName.toLowerCase().endsWith(".pdf") && !fileName.toLowerCase().endsWith(".docx"))) {
 			
-			throw new IllegalArgumentException("Only PDF and DOCX files are allowed");
+			throw new InvalidResumeException("Only PDF and DOCX files are allowed");
 		}
 		
 	}
@@ -65,6 +60,6 @@ public class ResumeService {
 			}
 		}
 		
-		throw new IllegalArgumentException("No extractor found for this file type");
+		throw new InvalidResumeException("No extractor found for this file type");
 	}
 }
