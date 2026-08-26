@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping("/api/resumes")
 public class ResumeController {
@@ -18,7 +20,7 @@ public class ResumeController {
 	}
 	
 	@PostMapping("/upload")
-	public String uploadResume(@RequestParam("file") MultipartFile file) {
+	public String uploadResume(@RequestParam("file") MultipartFile file) throws IOException {
 		return resumeService.uploadResume(file);
 	}
 
