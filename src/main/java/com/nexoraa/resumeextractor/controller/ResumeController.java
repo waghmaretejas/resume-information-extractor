@@ -1,5 +1,6 @@
 package com.nexoraa.resumeextractor.controller;
 
+import com.nexoraa.resumeextractor.model.CandidateProfile;
 import com.nexoraa.resumeextractor.service.ResumeService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +21,7 @@ public class ResumeController {
 	}
 	
 	@PostMapping("/upload")
-	public String uploadResume(@RequestParam("file") MultipartFile file) throws IOException {
+	public CandidateProfile uploadResume(@RequestParam("file") MultipartFile file) throws IOException {
 		return resumeService.uploadResume(file);
 	}
 

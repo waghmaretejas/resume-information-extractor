@@ -11,7 +11,9 @@ public class Project {
 	
 	private String description;
 	
-	private List<String> technologies;
-	
 	private String github;
+	
+	private List<String> links;
+	
+	private List<String> technologies;
 }

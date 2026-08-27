@@ -33,12 +33,24 @@ public class ContactInfoExtractor {
 		
 		PersonalInfo personalInfo = new PersonalInfo();
 		
+		personalInfo.setName(extractName(resumeText));
 		personalInfo.setEmail(extractFirstMatch(EMAIL_PATTERN, resumeText));
 		personalInfo.setPhone(extractFirstMatch(PHONE_PATTERN, resumeText));
 		personalInfo.setGithub(extractFirstMatch(GITHUB_PATTERN, resumeText));
 		personalInfo.setLinkedin(extractFirstMatch(LINKEDIN_PATTERN, resumeText));
 		
 		return personalInfo;
+	}
+	
+	private String extractName(String resumeText) {
+		
+		return resumeText
+				.lines()
+				.map(String::trim)
+				.filter(line -> !line.isEmpty())
+				.filter(line -> line.matches(".*[A-Za-z].*"))
+				.findFirst()
+				.orElse(null);
 	}
 	
 	private String extractFirstMatch(Pattern pattern, String text) {
