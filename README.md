@@ -1,4 +1,5 @@
 # Resume Information Extractor
+<img src="images/frontend.png" alt="Frontend Dashboard" width="800"/>
 
 An AI-powered web application that extracts structured information from resumes and presents it in a clean, user-friendly dashboard.
 
