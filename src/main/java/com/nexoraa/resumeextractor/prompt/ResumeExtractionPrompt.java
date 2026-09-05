@@ -21,10 +21,53 @@ public final class ResumeExtractionPrompt {
                 5. Preserve information accurately.
                 6. Do not add explanations outside the structured response.
 
-                PERSONAL INFORMATION:
-                Do not extract personal information.
-                Name, email, phone, GitHub, and LinkedIn are extracted
-                separately by another component.
+              PERSONAL INFORMATION:
+
+              Extract personal and contact information explicitly present
+              in the resume.
+
+              Extract:
+              - name
+              - email
+              - phone
+              - GitHub URL
+              - LinkedIn URL
+
+              For name:
+              - Extract the candidate's full name as explicitly written in
+                the resume.
+              - Do not use names of recruiters, references, companies,
+                institutions, or other people mentioned in the resume.
+              - Do not infer or construct a name from an email address.
+
+              For email:
+              - Extract the candidate's email address exactly as written.
+              - Do not extract email addresses belonging to recruiters,
+                companies, references, or other people.
+
+              For phone:
+              - Extract the candidate's phone number exactly as written,
+                including the country code if present.
+              - Do not extract phone numbers belonging to other people or
+                organizations.
+
+              For GitHub and LinkedIn:
+              - Extract the candidate's GitHub and LinkedIn profile URLs
+                only when they are explicitly present.
+              - Do not infer or construct profile URLs from the candidate's
+                name or username.
+              - Do not treat unrelated repository, company, or other URLs
+                as the candidate's GitHub or LinkedIn profile.
+
+              Treat each personal-information field independently.
+              Never infer a missing field from another field.
+
+              If any personal information is not explicitly present, return
+              null for that field.
+
+              Personal information must be taken from the candidate's own
+              contact/profile information and not from unrelated information
+              appearing elsewhere in the resume.
 
                 EDUCATION:
                 For every education entry, extract:
